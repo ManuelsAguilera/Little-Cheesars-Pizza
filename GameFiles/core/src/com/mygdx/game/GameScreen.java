@@ -11,32 +11,32 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
 
 public class GameScreen implements Screen {
-	final GameLluviaMenu game;
+	final GameMenu game;
     private OrthographicCamera camera;
 	private SpriteBatch batch;	   
 	private BitmapFont font;
-	private Tarro tarro;
-	private Lluvia lluvia;
+	private Player tarro;
+	private Ingredientes lluvia;
 
 	   
 	//boolean activo = true;
 
-	public GameScreen(final GameLluviaMenu game) {
+	public GameScreen(final GameMenu game) {
 		this.game = game;
         this.batch = game.getBatch();
         this.font = game.getFont();
 		  // load the images for the droplet and the bucket, 64x64 pixels each 	     
 		  Sound hurtSound = Gdx.audio.newSound(Gdx.files.internal("hurt.ogg"));
-		  tarro = new Tarro(new Texture(Gdx.files.internal("bucket.png")),hurtSound);
+		  tarro = new Player(new Texture(Gdx.files.internal("Personaje.png")),hurtSound);
          
 	      // load the drop sound effect and the rain background "music" 
-         Texture gota = new Texture(Gdx.files.internal("drop.png"));
-         Texture gotaMala = new Texture(Gdx.files.internal("dropBad.png"));
+         Texture gota = new Texture(Gdx.files.internal("Champinon.png"));
+         Texture gotaMala = new Texture(Gdx.files.internal("Pina.png"));
          
          Sound dropSound = Gdx.audio.newSound(Gdx.files.internal("drop.wav"));
         
 	     Music rainMusic = Gdx.audio.newMusic(Gdx.files.internal("rain.mp3"));
-         lluvia = new Lluvia(gota, gotaMala, dropSound, rainMusic);
+         lluvia = new Ingredientes(gota, gotaMala, dropSound, rainMusic);
 	      
 	      // camera
 	      camera = new OrthographicCamera();
@@ -100,7 +100,7 @@ public class GameScreen implements Screen {
 
 	@Override
 	public void pause() {
-		lluvia.pausar();
+		lluvia.pausar(); //Tener en cuenta el mov del teclado
 		game.setScreen(new PausaScreen(game, this)); 
 	}
 
