@@ -10,7 +10,7 @@ public class DesktopLauncher {
 		Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
 		config.setForegroundFPS(60);
 		config.setTitle("GameLluviaMenu");
-		config.setWindowedMode(1600, 960);
+		config.setWindowedMode(500, 500);
 		new Lwjgl3Application(new GameMenu(), config);
 	}
 }
