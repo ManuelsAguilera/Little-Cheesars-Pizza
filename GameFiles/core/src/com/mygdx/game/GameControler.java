@@ -19,8 +19,8 @@ public class GameControler implements GameObject {
         score = 0;
         lifes = 3;
         speedDiff = 1;
-        ingredientsList = new ArrayList<Ingredients>();
         pizzaOrder = new ArrayList<String>();
+        ingredientsList = new ArrayList<Ingredients>();
         // Agregar dos ingredientes a la lista
         
         addIngredient(2);
@@ -37,7 +37,7 @@ public class GameControler implements GameObject {
         if (pizzaOrder.size() == 0)
         {
         	generateOrder();
-        	speedDiff+=0.1;
+        	speedDiff+=0.2;
         	score++;
         	difficultyAdjust(speedDiff);
         	//Ver si agregar mas ingredientes
