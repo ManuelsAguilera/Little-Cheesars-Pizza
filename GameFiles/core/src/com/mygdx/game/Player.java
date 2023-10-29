@@ -10,14 +10,18 @@ import com.badlogic.gdx.math.Rectangle;
 public class Player implements GameObject{
 	private Sprite sprite;
     private float x, y; // Posición del jugador
-    private float speed = 200; // Velocidad de movimiento
+    private final float defaultSpeed = 200;
+    private float speed; // Velocidad de movimiento
     
-    public Player()
+    public Player(float ypos)
     {
-    	x=0; 	y=0;
+    	x=0; 	y=ypos;
+    	speed = defaultSpeed;
+    	
     	Texture texture = new Texture(Gdx.files.internal("Personaje.png"));
     	
     	sprite = new Sprite(texture);
+    	
     	
     }
 	
@@ -25,15 +29,7 @@ public class Player implements GameObject{
     public void update(float delta) {
     	
     	
-    	// Observar si hay que aumentar velocidad
-    	if (Gdx.input.isKeyPressed(Keys.W)) {
-            this.speed = 400; // Mover hacia la izquierda
-        }
-    	else 
-    	{
-    		this.speed = 200;
-    	}
-    	
+    	  	
     	
         // Manejo de entrada para mover al jugador
         if (Gdx.input.isKeyPressed(Keys.A)) {
@@ -63,6 +59,16 @@ public class Player implements GameObject{
     public Rectangle getBounds()
     {
     	return sprite.getBoundingRectangle();
+    }
+    
+    //Encapsular cambio velocidad
+    public boolean modificarVeloc(float cambio)
+    {
+    	if (!(0<cambio && cambio<1))
+    		return false;
+    	
+    	this.speed*=cambio;    	
+    	return true;
     }
     
 }

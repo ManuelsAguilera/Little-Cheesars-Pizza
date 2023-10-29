@@ -14,6 +14,8 @@ public class GameScreen implements Screen {
 
     private SpriteBatch batch;
     private Player player; // Agrega una referencia al objeto Player
+    private Ingredients obj1;
+    private Colectible obj2;
     final GameMenu game;
 	private BitmapFont font;
 
@@ -22,7 +24,9 @@ public class GameScreen implements Screen {
         this.batch = game.getBatch();
         this.font = game.getFont();
         batch = new SpriteBatch();
-        player = new Player(); // Crea una instancia de Player en el constructor
+        player = new Player(100); // Crea una instancia de Player en el constructor
+        obj1 = new Ingredients(250);
+        obj2 = new Colectible("Speed");
     }
 	
 	@Override
@@ -34,11 +38,16 @@ public class GameScreen implements Screen {
 	@Override
 	public void render(float delta) {
 		player.update(delta);
-
+		obj1.update(delta);
+		obj2.update(delta);
+		
         // Limpia la pantalla y dibuja al jugador
         ScreenUtils.clear(0, 0, 0.2f, 1);
         batch.begin();
         player.render(batch);
+        obj1.render(batch);
+        obj2.render(batch);
+        
         batch.end();
 		
 	}
