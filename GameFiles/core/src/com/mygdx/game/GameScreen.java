@@ -35,6 +35,11 @@ public class GameScreen implements Screen {
 	@Override
 	public void render(float delta) {
 		gameControler.update(delta);
+		if (gameControler.gameOver()) {
+	        // La partida ha terminado, cambia a la pantalla de GameOverScreen
+	        game.setScreen(new GameOverScreen(game)); // Reemplaza "GameOverScreen" con el nombre real de tu clase de pantalla de Game Over
+	        dispose();
+	    }
 		
         // Limpia la pantalla y dibuja al jugador
         ScreenUtils.clear(0, 0.4f, 0.1f, 1);
@@ -76,8 +81,9 @@ public class GameScreen implements Screen {
 
 	@Override
 	public void dispose() {
-		// TODO Auto-generated method stub
-		
+	    batch.dispose();
+	    font.dispose();
+	    // Agrega aquí la disposición de otros recursos si los tienes
 	}
 
 }

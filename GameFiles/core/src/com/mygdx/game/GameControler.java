@@ -9,6 +9,7 @@ import com.badlogic.gdx.math.Rectangle;
 public class GameControler implements GameObject {
     private long score;
     private int lifes;
+    private float speedDiff;
     private Player cheesar;
     private ArrayList<String> pizzaOrder;
     private ArrayList<Ingredients> ingredientsList; // Lista de ingredientes
@@ -17,6 +18,7 @@ public class GameControler implements GameObject {
         cheesar = new Player(250);
         score = 0;
         lifes = 3;
+        speedDiff = 1;
         ingredientsList = new ArrayList<Ingredients>();
         pizzaOrder = new ArrayList<String>();
         // Agregar dos ingredientes a la lista
@@ -35,8 +37,18 @@ public class GameControler implements GameObject {
         if (pizzaOrder.size() == 0)
         {
         	generateOrder();
+        	speedDiff+=0.1;
         	score++;
+        	difficultyAdjust(speedDiff);
+        	//Ver si agregar mas ingredientes
+            if (score % 3 == 0)
+            {
+            	addIngredient(1);
+            }
+            //elegir si añadir power Up
+            
         }
+        
         	
         
         for (Ingredients ingredient : ingredientsList) {
@@ -129,7 +141,13 @@ public class GameControler implements GameObject {
     		ingredientsList.add(new Ingredients(0));
     	}
     }
-
+    private void difficultyAdjust(float speedModificator)
+    {
+    	for (Ingredients ingredient: ingredientsList)
+    	{
+    		ingredient.modificarVeloc(speedModificator);
+    	}
+    }
     //Setters y getters necesarios
     public long getScore() {
     	return this.score;
@@ -151,6 +169,10 @@ public class GameControler implements GameObject {
     	}
     	return concatList;
     }
-    
+    //Revisar si es gameOver para el contexto
+    public boolean gameOver()
+    {
+    	return lifes <=0;
+    }
 }
     
