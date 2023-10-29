@@ -1,37 +1,40 @@
 package com.mygdx.game;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.maps.Map;
 import com.badlogic.gdx.scenes.scene2d.ui.List;
 
 public class Colectible extends FallingObject {
-	private ArrayList<Sprite> spriteList;
+	private HashMap<String,Sprite> spriteMap;
+	
 	private String id;
 	
 	public Colectible(String id) {
-		super(0);
-		int minX = 16;
-        int maxX = 463;
-        int randomX = minX + (int) (Math.random() * ((maxX - minX)));
-		this.setX(randomX);
+		super(600);
+		
+
 		//seteado X donde empezar
-		spriteList = new ArrayList<Sprite>();
-
-		
-		
-		if (id.equals("Speed"))
+		spriteMap = new HashMap<String,Sprite>();
+		spriteMap.put("Speed", new Sprite(new Texture("drop.png")));//placeholder
+		//pensado para tener mas sprites
+		Sprite sprite = new Sprite(new Texture("drop.png"));
+		if (sprite!=null)
 		{
-			Texture T = new Texture("drop.png"); //placeholder
-			spriteList.add(new Sprite(T));
-		}
-		else {
-			Texture T = new Texture("dropBad.png"); //Mientras no tengamos otros mas
-			spriteList.add(new Sprite(T));
+			setSprite(sprite);
+			
+			int minX = 16;
+	        int maxX = 463;
+	        int randomX = minX + (int) (Math.random() * ((maxX - minX)));
+			this.setX(randomX);
+			this.resetHeight();
+			
+
 		}
 		
-
 	}
 
 	
@@ -39,6 +42,13 @@ public class Colectible extends FallingObject {
 	@Override
 	public void reset() {
 		this.remove();
+	}
+
+
+
+	public String getType() {
+		// TODO Auto-generated method stub
+		return id;
 	}
 	
 }

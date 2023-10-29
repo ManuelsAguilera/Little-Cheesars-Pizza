@@ -61,13 +61,14 @@ public class Player implements GameObject{
     	return sprite.getBoundingRectangle();
     }
     
-    //Encapsular cambio velocidad
+    
+    //Encapsular cambio velocidad que funciona ingresando el porcentaje de esta
     public boolean modificarVeloc(float cambio)
     {
-    	if (!(0<cambio && cambio<1))
+    	if (!(0<cambio && cambio<4))
     		return false;
     	
-    	this.speed*=cambio;    	
+    	this.speed=defaultSpeed*cambio;    	
     	return true;
     }
     

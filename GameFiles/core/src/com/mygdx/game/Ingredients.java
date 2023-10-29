@@ -37,7 +37,6 @@ public class Ingredients extends FallingObject {
     private void resetSprite() {
         Random random = new Random();
         String randomType = ingredientTypes.get(random.nextInt(ingredientTypes.size()));
-        System.out.println(randomType);
         type= randomType;
         setSprite(ingredientMap.get(type));
     }

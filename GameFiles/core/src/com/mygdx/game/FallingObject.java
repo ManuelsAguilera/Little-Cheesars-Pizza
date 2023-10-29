@@ -44,7 +44,7 @@ public abstract class FallingObject implements GameObject {
     	
     	//Si llega a y = 0 reiniciar posicion.
     	
-    	if (y<=50 )
+    	if (y<=100 )
     		this.reset();
     	
     	
