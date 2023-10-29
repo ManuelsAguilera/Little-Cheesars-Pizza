@@ -15,6 +15,7 @@ public class GameScreen implements Screen {
     private SpriteBatch batch;
     private GameControler gameControler;
     final GameMenu game;
+    private final Music backgroundMusic;
 	private BitmapFont font;
 
     public GameScreen(final GameMenu game) {
@@ -22,6 +23,14 @@ public class GameScreen implements Screen {
         this.batch = game.getBatch();
         this.font = game.getFont();
         batch = new SpriteBatch();
+        //Añadir musica
+     
+        backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal("novoimpegiato.mp3"));
+
+        // Configura opciones de la música (por ejemplo, repetirla)
+        backgroundMusic.setLooping(true);
+        backgroundMusic.setVolume(0.5f); // Ajusta el volumen de la música
+        backgroundMusic.play(); // Inicia la reproducción de la música
         
         gameControler = new GameControler();
     }
@@ -83,6 +92,8 @@ public class GameScreen implements Screen {
 	public void dispose() {
 	    batch.dispose();
 	    font.dispose();
+	    backgroundMusic.stop(); // Detén la música
+	    backgroundMusic.dispose(); // Libera los recursos de la música
 	    // Agrega aquí la disposición de otros recursos si los tienes
 	}
 
