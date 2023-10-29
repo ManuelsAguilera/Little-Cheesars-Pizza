@@ -13,9 +13,7 @@ import com.badlogic.gdx.utils.ScreenUtils;
 public class GameScreen implements Screen {
 
     private SpriteBatch batch;
-    private Player player; // Agrega una referencia al objeto Player
-    private Ingredients obj1;
-    private Colectible obj2;
+    private GameControler gameControler;
     final GameMenu game;
 	private BitmapFont font;
 
@@ -24,9 +22,8 @@ public class GameScreen implements Screen {
         this.batch = game.getBatch();
         this.font = game.getFont();
         batch = new SpriteBatch();
-        player = new Player(100); // Crea una instancia de Player en el constructor
-        obj1 = new Ingredients(250);
-        obj2 = new Colectible("Speed");
+        
+        gameControler = new GameControler();
     }
 	
 	@Override
@@ -37,17 +34,18 @@ public class GameScreen implements Screen {
 
 	@Override
 	public void render(float delta) {
-		player.update(delta);
-		obj1.update(delta);
-		obj2.update(delta);
+		gameControler.update(delta);
 		
         // Limpia la pantalla y dibuja al jugador
-        ScreenUtils.clear(0, 0, 0.2f, 1);
-        batch.begin();
-        player.render(batch);
-        obj1.render(batch);
-        obj2.render(batch);
+        ScreenUtils.clear(0, 0.4f, 0.1f, 1);
         
+        batch.begin();
+        gameControler.render(batch);
+        font.getData().setScale(1.5f); 
+        font.draw(batch, "Score: " + gameControler.getScore(), 10, Gdx.graphics.getHeight() - 10);
+        font.draw(batch, "Lives: " + gameControler.getLifes(), Gdx.graphics.getWidth() - 100, Gdx.graphics.getHeight() - 10);
+        font.getData().setScale(1f); 
+        font.draw(batch, "Orden de pizza: " + gameControler.getOrderConcat(),10 , Gdx.graphics.getHeight()-40);
         batch.end();
 		
 	}
