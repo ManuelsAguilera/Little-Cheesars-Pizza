@@ -17,14 +17,19 @@ public class GameScreen implements Screen {
     final GameMenu game;
     private final Music backgroundMusic;
 	private BitmapFont font;
+	private Texture backgroundImage;
+	//ANIMACIÓN
+	private Cheesar cheesar; 
+	private float cheesarPositionX;
+    private float cheesarPositionY;
 
     public GameScreen(final GameMenu game) {
 		this.game = game;
         this.batch = game.getBatch();
         this.font = game.getFont();
         batch = new SpriteBatch();
+        
         //Añadir musica
-     
         backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal("novoimpegiato.mp3"));
 
         // Configura opciones de la música (por ejemplo, repetirla)
@@ -33,6 +38,8 @@ public class GameScreen implements Screen {
         backgroundMusic.play(); // Inicia la reproducción de la música
         
         gameControler = new GameControler();
+        backgroundImage = new Texture("Fondo.png");  // Ajusta el nombre del archivo de imagen
+        
     }
 	
 	@Override
@@ -48,13 +55,12 @@ public class GameScreen implements Screen {
 	        // La partida ha terminado, cambia a la pantalla de GameOverScreen
 	        game.setScreen(new GameOverScreen(game)); // Reemplaza "GameOverScreen" con el nombre real de tu clase de pantalla de Game Over
 	        dispose();
-	    }
-		
-        // Limpia la pantalla y dibuja al jugador
-        ScreenUtils.clear(0, 0.4f, 0.1f, 1);
-        
+	    }     
+        //Aqui se inioian las capas del juego!!
         batch.begin();
+        batch.draw(backgroundImage, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight()); //PONE EL FONDO
         gameControler.render(batch);
+        //Información del Jugador
         font.getData().setScale(1.5f); 
         font.draw(batch, "Score: " + gameControler.getScore(), 10, Gdx.graphics.getHeight() - 10);
         font.draw(batch, "Lives: " + gameControler.getLifes(), Gdx.graphics.getWidth() - 100, Gdx.graphics.getHeight() - 10);
@@ -94,7 +100,6 @@ public class GameScreen implements Screen {
 	    font.dispose();
 	    backgroundMusic.stop(); // Detén la música
 	    backgroundMusic.dispose(); // Libera los recursos de la música
-	    // Agrega aquí la disposición de otros recursos si los tienes
 	}
 
 }

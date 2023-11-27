@@ -12,47 +12,47 @@ public class Player implements GameObject{
     private float x, y; // Posición del jugador
     private final float defaultSpeed = 200;
     private float speed; // Velocidad de movimiento
+    private boolean flipped = false;
     
-    public Player(float ypos)
-    {
-    	x=0; 	y=ypos;
+    public Player(float ypos){
+    	x = Gdx.graphics.getWidth()/2 - 11; 
+    	y = ypos;
     	speed = defaultSpeed;
-    	
-    	Texture texture = new Texture(Gdx.files.internal("Personaje.png"));
-    	
+    	Texture texture = new Texture(Gdx.files.internal("Hitbox.png"));
     	sprite = new Sprite(texture);
-    	
-    	
     }
 	
 
     public void update(float delta) {
-    	
-    	
-    	  	
-    	
         // Manejo de entrada para mover al jugador
         if (Gdx.input.isKeyPressed(Keys.A)) {
             x -= speed * delta; // Mover hacia la izquierda
+            flipped = true; // Voltear la imagen
         }
-        if (Gdx.input.isKeyPressed(Keys.D)) {
+        else if (Gdx.input.isKeyPressed(Keys.D)) {
             x += speed * delta; // Mover hacia la derecha
+            flipped = false; //Reestablecer la imagen
         }
         
         // Limitar la posición del jugador dentro de la pantalla (ajusta estos valores según tus necesidades)
-        if (x < 0) {
-            x = 0;
+        // la hitbox amarilla va al mismo tiempo cuando el valor es 20:)
+        if (x < 20) {
+            x = 20;
         }
-        if (x > Gdx.graphics.getWidth() - sprite.getWidth()) {
-            x = Gdx.graphics.getWidth() - sprite.getWidth();
+        if (x > (Gdx.graphics.getWidth() - sprite.getWidth())-20) {
+            x = (Gdx.graphics.getWidth() - sprite.getWidth())-20;
         }
         
         // Actualizar la posición del sprite
         sprite.setPosition(x, y);
     }
     
-    public void render(SpriteBatch batch)
-    {
+    public void render(SpriteBatch batch){
+    	if (flipped) {
+            sprite.setScale(-1, 1);
+        } else {
+            sprite.setScale(1, 1);
+        }
     	sprite.draw(batch);
     }
     

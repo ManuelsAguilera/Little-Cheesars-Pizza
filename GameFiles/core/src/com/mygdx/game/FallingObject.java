@@ -44,7 +44,7 @@ public abstract class FallingObject implements GameObject {
     	
     	//Si llega a y = 0 reiniciar posicion.
     	
-    	if (y<=100 )
+    	if (y<=64 )
     		this.reset();
     	
     	
@@ -90,7 +90,10 @@ public abstract class FallingObject implements GameObject {
     //encapsular reiniciar altura
     public void resetHeight()
     {
-    	this.y = highestY;
+        int minY = 480;
+        int maxY = 800;
+        int randomY = minY + (int) (Math.random() * ((maxY - minY)));
+    	this.y = randomY;
     }
     public void setX(float xValue)
     {

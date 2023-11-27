@@ -21,6 +21,7 @@ public class MainMenuScreen implements Screen {
         this.font = game.getFont();
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, 800, 480);
+		
 	}
 
 	@Override
@@ -32,9 +33,8 @@ public class MainMenuScreen implements Screen {
 
 		batch.begin();
 		font.getData().setScale(2, 2);
-		font.draw(batch, "Bienvenido a Recolecta Gotas!!! ", 100, camera.viewportHeight/2+50);
-		font.draw(batch, "Toca en cualquier lugar para comenzar!", 100, camera.viewportHeight/2-50);
-
+		font.draw(batch, "Bienvenido a Little Cheesar's Pizza!!! ", 100, camera.viewportHeight/2+50);
+		font.draw(batch, "Toca para comenzar!", 100, camera.viewportHeight/2-50);
 		batch.end();
 
 		if (Gdx.input.isTouched()) {

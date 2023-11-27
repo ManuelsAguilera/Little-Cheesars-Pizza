@@ -42,24 +42,23 @@ public class Ingredients extends FallingObject {
     }
 
     // Implementa reset para cambiar el sprite al azar y el tipo
-    public void reset() {
-        
-
+    public void reset(){
         // Asignar un tipo aleatorio al ingrediente
         resetSprite();
-        
         int minX = 16;
-        int maxX = 463;
+        int maxX = 745;
         int randomX = minX + (int) (Math.random() * ((maxX - minX)));
         this.setX(randomX);
         this.resetHeight();
     }
-    public ArrayList getIngTypes()
-    {
+    
+    public ArrayList getIngTypes(){
     	ArrayList<String> cpy = new ArrayList<String>();
     	cpy.addAll(ingredientMap.keySet());
     	return cpy;
     }
+    
+    
     // Getter para identificar el tipo de ingrediente.
     public String getType() {
         return this.type;

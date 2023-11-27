@@ -3,7 +3,10 @@ package com.mygdx.game;
 import java.util.ArrayList;
 import java.util.Random;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Rectangle;
 
 public class GameControler implements GameObject {
@@ -13,12 +16,14 @@ public class GameControler implements GameObject {
     private boolean statusChange;
     private float statusChangeTemp; //temporizador de cambio de estado
     private Player cheesar;
+    private Cheesar animation;
     private ArrayList<String> pizzaOrder;
     private ArrayList<Ingredients> ingredientsList; // Lista de ingredientes
-    private ArrayList<Colectible> powerUps;
-
+    private ArrayList<Colectible> powerUps; // Lista de PowerUps
+    
     public GameControler() {
-        cheesar = new Player(250);
+        cheesar = new Player(115);//Modifica la altura de la hitbox
+        animation = new Cheesar(0, 0);//Modifica la altura de la animación
         score = 0;
         lifes = 3;
         speedDiff = 1;
@@ -28,22 +33,26 @@ public class GameControler implements GameObject {
         powerUps = new ArrayList<Colectible>();
         
         // Agregar dos ingredientes a la lista
-        
-        addIngredient(2);
+        addIngredient(7);
         addColectible("Speed");
-        generateOrder();
-        
-        
+        generateOrder(2);
+        new ShapeRenderer();
     }
 
     @Override
     public void update(float delta) {
+    	int cont=2;
         cheesar.update(delta);
-        
+        animation.update(delta); //EXCLUSIVO ANIMACIÓN
         //checkear si se termino la lista de ordenes
         if (pizzaOrder.size() == 0)
         {
-        	generateOrder();
+        	if (score % 6 == 0) {
+        		cont++;
+        		generateOrder(cont);
+        	} else {
+        		generateOrder(cont);
+        	}
         	speedDiff+=0.2;
         	score++;
         	difficultyAdjust(speedDiff);
@@ -53,10 +62,10 @@ public class GameControler implements GameObject {
             	addIngredient(1);
             }
             //elegir si añadir power Up
-            Random random = new Random();
+            //Random random = new Random();
             /*if (0 == random.nextInt(10)) //probabilidad de 1/10
-            	addColectible("Speed");
-            	*/
+            	addColectible("Speed");*/
+            	
             addColectible("Speed");
         }
         
@@ -90,12 +99,10 @@ public class GameControler implements GameObject {
         {
         	//statusChange es booleano, pero mas adelante podria tener id
         	//para varios tipos de camio de estado
-        	
         	cheesar.modificarVeloc(1); //reinicia veloc
+        	animation.modificarVeloc(1);
         }
-        
-        
-    	
+
     }
 
     
@@ -104,36 +111,36 @@ public class GameControler implements GameObject {
 		if (type.equals("Speed"))
 		{
 			cheesar.modificarVeloc(2); //Aumenta el doble
+			animation.modificarVeloc(2);
 			statusChangeTemp = 5.0f;
 		}
 		
 	}
 
 	private void addColectible(String id) {
-				//asi que temporalmente solo añade Speed
-		System.out.println("asdasd");
+		//asi que temporalmente solo añade Speed
+		//System.out.println("asdasd");
 		powerUps.add(new Colectible("Speed"));
-		
-		
-		
 	}
 
 	@Override
-    public void render(SpriteBatch batch) {
-        // Renderizar ingredientes y otros elementos del juego
-    	cheesar.render(batch);
-    	
-        for (Ingredients ingredient : ingredientsList) {
-            ingredient.render(batch);
-        }
-    }
-
+	 public void render(SpriteBatch batch) {
+	    //Renderizar al jugador
+	    cheesar.render(batch);
+	    //Renderizar animación
+	    animation.render(batch);
+	    // Renderizar los ingredientes
+	    for (Ingredients ingredient : ingredientsList) {
+	        ingredient.render(batch);
+	    }
+	}
+	
     @Override
     public Rectangle getBounds() {
-        // Devolver los límites del controlador del juego (que no es necesario)
         return null;
     }
-    private void generateOrder() {
+    
+    private void generateOrder(int number) {
         // Vaciar la lista de pedidos de pizza si tiene datos
         if (pizzaOrder != null) {
             pizzaOrder.clear();
@@ -144,7 +151,7 @@ public class GameControler implements GameObject {
         Random random = new Random();
 
         // Agregar ingredientes al pedido (por ejemplo, 3 ingredientes)
-        int numberOfIngredients = 2; // Ajusta el número de ingredientes según tus preferencias
+        int numberOfIngredients = number; // Ajusta el número de ingredientes según tus preferencias
         for (int i = 0; i < numberOfIngredients; i++) {
             int randomIndex = random.nextInt(availableIngredients.length);
             pizzaOrder.add(availableIngredients[randomIndex]);
