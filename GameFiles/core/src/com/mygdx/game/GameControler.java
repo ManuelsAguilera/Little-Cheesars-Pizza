@@ -34,7 +34,6 @@ public class GameControler implements GameObject {
         
         // Agregar dos ingredientes a la lista
         addIngredient(7);
-        addColectible("Speed");
         generateOrder(2);
         new ShapeRenderer();
     }
@@ -62,17 +61,19 @@ public class GameControler implements GameObject {
             	addIngredient(1);
             }
             //elegir si añadir power Up
-            //Random random = new Random();
-            /*if (0 == random.nextInt(10)) //probabilidad de 1/10
-            	addColectible("Speed");*/
+            Random random = new Random();
+            if (0 == random.nextInt(10)) //probabilidad de 1/10
+            	addColectible(1);
             	
-            addColectible("Speed");
+            addColectible(1);
         }
-        
-        	
         
         for (Ingredients ingredient : ingredientsList) {
             ingredient.update(delta);
+        }
+        
+        for (Colectible colectible : powerUps) {
+            colectible.update(delta);
         }
         
         Ingredients auxIng = detectCollisionsIng();  //get Ingredient that colided.
@@ -117,10 +118,12 @@ public class GameControler implements GameObject {
 		
 	}
 
-	private void addColectible(String id) {
-		//asi que temporalmente solo añade Speed
-		//System.out.println("asdasd");
-		powerUps.add(new Colectible("Speed"));
+	private void addColectible(int cant) {
+		System.out.println("asdasd");
+		for (int i = 0; i < cant; i++)
+    	{
+			powerUps.add(new Colectible(0));
+    	}
 	}
 
 	@Override
@@ -132,6 +135,10 @@ public class GameControler implements GameObject {
 	    // Renderizar los ingredientes
 	    for (Ingredients ingredient : ingredientsList) {
 	        ingredient.render(batch);
+	    }
+	    // Renderizar power-ups
+	    for (Colectible colectible : powerUps) {
+	        colectible.render(batch);
 	    }
 	}
 	

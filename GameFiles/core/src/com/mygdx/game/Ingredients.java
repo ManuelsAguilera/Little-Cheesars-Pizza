@@ -15,9 +15,10 @@ public class Ingredients extends FallingObject {
 
     public Ingredients(float initialX) {
         super(initialX);
+        
         ingredientMap = new HashMap<String, Sprite>();
         ingredientTypes = new ArrayList<String>();
-
+        
         // Agrega las texturas de ingredientes al mapa con sus respectivos tipos
         ingredientMap.put("Salame", new Sprite(new Texture("Salame.png")));
         ingredientMap.put("Pina", new Sprite(new Texture("Pina.png")));
@@ -37,7 +38,7 @@ public class Ingredients extends FallingObject {
     private void resetSprite() {
         Random random = new Random();
         String randomType = ingredientTypes.get(random.nextInt(ingredientTypes.size()));
-        type= randomType;
+        type = randomType;
         setSprite(ingredientMap.get(type));
     }
 

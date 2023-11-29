@@ -13,7 +13,7 @@ public abstract class FallingObject implements GameObject {
     private float highestY; // Nueva variable para rastrear la posición más alta
     private boolean isDetained;
     
-    
+    /*
     public FallingObject(Texture texture, float x) {
         sprite = new Sprite(texture);
         this.x = x;
@@ -23,11 +23,12 @@ public abstract class FallingObject implements GameObject {
         speedY = 500; // Velocidad de caída inicial (ajusta según tus necesidades)
         			
         isDetained=false;
-    }
+    }*/
+    
     public FallingObject(float x) {
-    	sprite = new Sprite(new Texture("drop.png")); //Default
+    	//sprite = new Sprite(new Texture("drop.png")); //Default
         this.x = x;
-        this.highestY = 500; // Define la posición inicial en la parte superior
+        this.highestY = 100; // Define la posición inicial en la parte superior
         y = highestY; // Inicializa la posición más alta con la posición inicial
         
         speedY = 100; // Velocidad de caída inicial (ajusta según tus necesidades)
