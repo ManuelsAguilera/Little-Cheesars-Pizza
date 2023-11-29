@@ -10,14 +10,16 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Rectangle;
 
 public class GameControler implements GameObject {
-    private long score;
-    private int lifes;
-    private float speedDiff;
-    private boolean statusChange;
-    private float statusChangeTemp; //temporizador de cambio de estado
+    private long score; //Puntaje
+    private int lifes; //Vidas de Cheesar
+    private int cont; //Contador auxiliar
+    private int cantIng; //Cantidad de ingredientes
+    private float speedDiff; //Velocidad de Cheesar
+    private String statusChange; //Cambio de estado
+    private float statusChangeTemp; //Temporizador de cambio de estado
     private Player cheesar;
     private Cheesar animation;
-    private ArrayList<String> pizzaOrder;
+    private ArrayList<String> pizzaOrder; //Pedido de ingredientes a recolectar
     private ArrayList<Ingredients> ingredientsList; // Lista de ingredientes
     private ArrayList<Colectible> powerUps; // Lista de PowerUps
     
@@ -26,24 +28,27 @@ public class GameControler implements GameObject {
         animation = new Cheesar(0, 0);//Modifica la altura de la animación
         score = 0;
         lifes = 3;
+        cont = 2;
+        cantIng = 6;
         speedDiff = 1;
-        statusChange = false;
+        statusChange = "";
         pizzaOrder = new ArrayList<String>();
         ingredientsList = new ArrayList<Ingredients>();
         powerUps = new ArrayList<Colectible>();
         
         // Agregar dos ingredientes a la lista
-        addIngredient(7);
+        addIngredient(cantIng);
         generateOrder(2);
+        addColectible(1);
         new ShapeRenderer();
     }
 
     @Override
     public void update(float delta) {
-    	int cont=2;
         cheesar.update(delta);
         animation.update(delta); //EXCLUSIVO ANIMACIÓN
-        //checkear si se termino la lista de ordenes
+        
+        //Checkear si se terminó la orden de ingredientes
         if (pizzaOrder.size() == 0)
         {
         	if (score % 6 == 0) {
@@ -52,20 +57,21 @@ public class GameControler implements GameObject {
         	} else {
         		generateOrder(cont);
         	}
+        	
         	speedDiff+=0.2;
         	score++;
         	difficultyAdjust(speedDiff);
-        	//Ver si agregar mas ingredientes
+        	
+        	//Verificar si agregar más ingredientes
             if (score % 3 == 0)
             {
             	addIngredient(1);
+            	cantIng++;
             }
-            //elegir si añadir power Up
+            //Probabilidad de aparición de Power-Up
             Random random = new Random();
-            if (0 == random.nextInt(10)) //probabilidad de 1/10
+            if (0 == random.nextInt(8)) //probabilidad de 1/8
             	addColectible(1);
-            	
-            addColectible(1);
         }
         
         for (Ingredients ingredient : ingredientsList) {
@@ -96,17 +102,21 @@ public class GameControler implements GameObject {
         {
         	statusChangeTemp-=delta;
         }
-        if (statusChangeTemp == 0 & statusChange )
+        
+        if (statusChangeTemp <= 0 & statusChange == "Speed" )
         {
-        	//statusChange es booleano, pero mas adelante podria tener id
-        	//para varios tipos de camio de estado
-        	cheesar.modificarVeloc(1); //reinicia veloc
+        	cheesar.modificarVeloc(1); // Reiniciar velocidad
         	animation.modificarVeloc(1);
+        	statusChange = "";
+        }
+        
+        if (statusChangeTemp <= 0 & statusChange == "Bonus" )
+        {
+        	generateOrder(cont);
+        	statusChange = "";
         }
 
     }
-
-    
 
 	private void activateColectible(String type) {
 		if (type.equals("Speed"))
@@ -114,12 +124,26 @@ public class GameControler implements GameObject {
 			cheesar.modificarVeloc(2); //Aumenta el doble
 			animation.modificarVeloc(2);
 			statusChangeTemp = 5.0f;
+			statusChange = "Speed";
+		}
+		
+		if (type.equals("HP"))
+		{
+			if (lifes < 3)
+				lifes++;
+		}
+		
+		if (type.equals("Bonus"))
+		{
+			generateBonus(cont);
+			statusChangeTemp = 10.0f;
+			statusChange = "Bonus";
 		}
 		
 	}
 
 	private void addColectible(int cant) {
-		System.out.println("asdasd");
+		System.out.println("+1 Power-Up");
 		for (int i = 0; i < cant; i++)
     	{
 			powerUps.add(new Colectible(0));
@@ -136,6 +160,18 @@ public class GameControler implements GameObject {
 	    for (Ingredients ingredient : ingredientsList) {
 	        ingredient.render(batch);
 	    }
+	    /*if(statusChange == "Bonus")
+	    {
+	    	for (Ingredients ingredient : ingredientsList) {
+		        ingredient.render(batch);
+		    }
+	    }
+	    else
+	    {
+	    	for (Ingredients ingredient : ingredientsList) {
+	    		ingredient.render(batch);
+	    	}
+	    }*/
 	    // Renderizar power-ups
 	    for (Colectible colectible : powerUps) {
 	        colectible.render(batch);
@@ -165,6 +201,23 @@ public class GameControler implements GameObject {
         }
     }
     
+    private void generateBonus(int number) {
+        // Vaciar la lista de pedidos de pizza si posee datos
+        if (pizzaOrder != null) {
+            pizzaOrder.clear();
+        }
+
+        String[] availableIngredients = {"Bonus"};
+        Random random = new Random();
+
+        // Agregar ingredientes al pedido
+        int numberOfIngredients = number; // Ajusta el número de ingredientes según tus preferencias
+        for (int i = 0; i < numberOfIngredients; i++) {
+            int randomIndex = random.nextInt(availableIngredients.length);
+            pizzaOrder.add(availableIngredients[randomIndex]);
+        }
+    }
+    
     private void checkCorrectOrder(String type) {
 		//Revisa si es parte de una pizza ordenada
     	//si no es, pierdes vida
@@ -183,6 +236,7 @@ public class GameControler implements GameObject {
     	}
     	this.lifes--;
 	}
+    
     private Ingredients detectCollisionsIng() {
         Rectangle playerBounds = cheesar.getBounds();
 
@@ -196,6 +250,7 @@ public class GameControler implements GameObject {
         }
         return null;
     }
+    
     private Colectible detectCollisionsCol() {
         Rectangle playerBounds = cheesar.getBounds();
 
@@ -209,6 +264,7 @@ public class GameControler implements GameObject {
         }
         return null;
     }
+    
     private void addIngredient(int cant)
     {
     	for (int i = 0; i < cant; i++)
@@ -216,6 +272,7 @@ public class GameControler implements GameObject {
     		ingredientsList.add(new Ingredients(0));
     	}
     }
+    
     private void difficultyAdjust(float speedModificator)
     {
     	for (Ingredients ingredient: ingredientsList)
@@ -227,10 +284,12 @@ public class GameControler implements GameObject {
     public long getScore() {
     	return this.score;
     }
+    
     public int getLifes()
     {
     	return this.lifes;
     }
+    
     public String getOrderConcat()
     {
     	if (pizzaOrder == null)

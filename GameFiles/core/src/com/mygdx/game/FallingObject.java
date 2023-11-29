@@ -26,7 +26,6 @@ public abstract class FallingObject implements GameObject {
     }*/
     
     public FallingObject(float x) {
-    	//sprite = new Sprite(new Texture("drop.png")); //Default
         this.x = x;
         this.highestY = 100; // Define la posición inicial en la parte superior
         y = highestY; // Inicializa la posición más alta con la posición inicial
