@@ -6,6 +6,8 @@ import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
 
 public class GameScreen implements Screen {
 
@@ -15,7 +17,10 @@ public class GameScreen implements Screen {
     private final Music backgroundMusic;
 	private BitmapFont font;
 	private Texture backgroundImage;
-	private Texture lifesCheesar;
+	private Texture tresvidas;
+	private Texture dosvidas;
+	private Texture unavidas;
+	private Texture[] texturas;//Para cambiar texturas
 	
 	public GameScreen(final GameMenu game) {
 		this.game = game;
@@ -33,7 +38,14 @@ public class GameScreen implements Screen {
         
         gameControler = GameControler.getInstance();
         backgroundImage = new Texture("Fondo.png");  // Ajusta el nombre del archivo de imagen
-        lifesCheesar = new Texture("Corazon.png"); 
+        
+        texturas = new Texture[3];
+        tresvidas = new Texture("vida3de3.png");
+        dosvidas = new Texture("vida2de3.png");
+        unavidas = new Texture("vida1de3.png");
+        texturas[0] = unavidas;
+        texturas[1] = dosvidas;
+        texturas[2] = tresvidas;
     }
 	
 	@Override
@@ -41,7 +53,21 @@ public class GameScreen implements Screen {
 		// TODO Auto-generated method stub
 		
 	}
-
+	
+	public void writeInfo() {
+		FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("Montserrat-Bold.ttf"));
+		FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
+		parameter.size = 24; // Tamaño de la fuente
+		BitmapFont font = generator.generateFont(parameter);
+		generator.dispose();
+		font.getRegion().getTexture().setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+		//Información del Jugador
+        font.draw(batch, "Ganancias: " + gameControler.getScore(), 10, Gdx.graphics.getHeight() - 10);
+        font.draw(batch, "Orden: " + gameControler.getOrderConcat(),10 , Gdx.graphics.getHeight()-40);
+        int cont = gameControler.getLifes();
+        batch.draw(texturas[cont-1], Gdx.graphics.getWidth() - 130, Gdx.graphics.getHeight() - 20, 128, 128);
+	}
+	
 	@Override
 	public void render(float delta) {
 		gameControler.update(delta);
@@ -52,14 +78,10 @@ public class GameScreen implements Screen {
 	    }     
         //Aqui se inioian las capas del juego!!
         batch.begin();
-        batch.draw(backgroundImage, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight()); //PONE EL FONDO
+        //Fondo
+        batch.draw(backgroundImage, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         gameControler.render(batch);
-        //Información del Jugador
-        font.getData().setScale(1.5f); 
-        font.draw(batch, "Score: " + gameControler.getScore(), 10, Gdx.graphics.getHeight() - 10);
-        font.draw(batch, "Lives: " + gameControler.getLifes(), Gdx.graphics.getWidth() - 100, Gdx.graphics.getHeight() - 10);
-        font.getData().setScale(1f); 
-        font.draw(batch, "Orden de pizza: " + gameControler.getOrderConcat(),10 , Gdx.graphics.getHeight()-40);
+        writeInfo();
         batch.end();
 		
 	}
