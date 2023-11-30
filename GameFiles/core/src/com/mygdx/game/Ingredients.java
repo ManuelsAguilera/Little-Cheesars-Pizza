@@ -53,7 +53,7 @@ public class Ingredients extends FallingObject {
         this.resetHeight();
     }
     
-    public ArrayList getIngTypes(){
+    public ArrayList<String> getIngTypes(){
     	ArrayList<String> cpy = new ArrayList<String>();
     	cpy.addAll(ingredientMap.keySet());
     	return cpy;

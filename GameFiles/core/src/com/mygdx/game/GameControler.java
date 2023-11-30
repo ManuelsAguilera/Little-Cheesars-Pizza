@@ -3,10 +3,8 @@ package com.mygdx.game;
 import java.util.ArrayList;
 import java.util.Random;
 
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Rectangle;
 
 public class GameControler implements GameObject {
@@ -22,8 +20,9 @@ public class GameControler implements GameObject {
     private ArrayList<String> pizzaOrder; //Pedido de ingredientes a recolectar
     private ArrayList<Ingredients> ingredientsList; // Lista de ingredientes
     private ArrayList<Colectible> powerUps; // Lista de PowerUps
+    private static GameControler instance;    
     
-    public GameControler() {
+    private GameControler(){
         cheesar = new Player(115);//Modifica la altura de la hitbox
         animation = new Cheesar(0, 0);//Modifica la altura de la animación
         score = 0;
@@ -42,7 +41,14 @@ public class GameControler implements GameObject {
         addColectible(1);
         new ShapeRenderer();
     }
-
+    
+    public static GameControler getInstance() {
+        if (instance == null) {
+            instance = new GameControler();
+        }
+        return instance;
+    }
+    
     @Override
     public void update(float delta) {
         cheesar.update(delta);

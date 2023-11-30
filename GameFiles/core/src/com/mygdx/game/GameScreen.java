@@ -3,12 +3,9 @@ package com.mygdx.game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
-import com.badlogic.gdx.audio.Sound;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.utils.ScreenUtils;
 
 public class GameScreen implements Screen {
 
@@ -18,12 +15,9 @@ public class GameScreen implements Screen {
     private final Music backgroundMusic;
 	private BitmapFont font;
 	private Texture backgroundImage;
-	//ANIMACIÓN
-	private Cheesar cheesar; 
-	private float cheesarPositionX;
-    private float cheesarPositionY;
-
-    public GameScreen(final GameMenu game) {
+	private Texture lifesCheesar;
+	
+	public GameScreen(final GameMenu game) {
 		this.game = game;
         this.batch = game.getBatch();
         this.font = game.getFont();
@@ -37,9 +31,9 @@ public class GameScreen implements Screen {
         backgroundMusic.setVolume(0.5f); // Ajusta el volumen de la música
         backgroundMusic.play(); // Inicia la reproducción de la música
         
-        gameControler = new GameControler();
+        gameControler = GameControler.getInstance();
         backgroundImage = new Texture("Fondo.png");  // Ajusta el nombre del archivo de imagen
-        
+        lifesCheesar = new Texture("Corazon.png"); 
     }
 	
 	@Override

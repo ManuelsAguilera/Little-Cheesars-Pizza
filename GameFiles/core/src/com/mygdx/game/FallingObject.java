@@ -1,6 +1,5 @@
 package com.mygdx.game;
 
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
@@ -59,6 +58,7 @@ public abstract class FallingObject implements GameObject {
 
         sprite.setPosition(x, y);
     }
+    
     public abstract void reset();
     
     @Override

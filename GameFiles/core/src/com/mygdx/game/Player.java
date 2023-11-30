@@ -22,7 +22,6 @@ public class Player implements GameObject{
     	sprite = new Sprite(texture);
     }
 	
-
     public void update(float delta) {
         // Manejo de entrada para mover al jugador
         if (Gdx.input.isKeyPressed(Keys.A)) {
