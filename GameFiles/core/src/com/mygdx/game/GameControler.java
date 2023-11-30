@@ -51,21 +51,24 @@ public class GameControler implements GameObject {
         //Checkear si se terminó la orden de ingredientes
         if (pizzaOrder.size() == 0)
         {
-        	if (score % 6 == 0) {
-        		cont++;
-        		generateOrder(cont);
-        	} else {
-        		generateOrder(cont);
-        	}
-        	
         	speedDiff+=0.2;
         	score++;
         	difficultyAdjust(speedDiff);
+        	
+        	if (score % 6 == 0) {
+        		cont++;
+        		System.out.println("+Orden");
+        		generateOrder(cont);
+        	} else {
+        		System.out.println("todo bien");
+        		generateOrder(cont);
+        	}
         	
         	//Verificar si agregar más ingredientes
             if (score % 3 == 0)
             {
             	addIngredient(1);
+            	System.out.println("+Ingrediente");
             	cantIng++;
             }
             //Probabilidad de aparición de Power-Up
@@ -82,20 +85,21 @@ public class GameControler implements GameObject {
             colectible.update(delta);
         }
         
-        Ingredients auxIng = detectCollisionsIng();  //get Ingredient that colided.
+        Ingredients auxIng = detectCollisionsIng();  //get Ingredient that collided.
         if (auxIng != null)
         {
-        	
         	String type = auxIng.getType();
         	checkCorrectOrder(type);
         	auxIng.reset();
         }
+        
         Colectible auxCol = detectCollisionsCol();
         if (auxCol != null)
         {
         	String type = auxCol.getType();
         	activateColectible(type);
         	auxCol.reset();
+        	auxCol.remove();
         }
         //Check change status
         if (statusChangeTemp > 0)
@@ -129,8 +133,10 @@ public class GameControler implements GameObject {
 		
 		if (type.equals("HP"))
 		{
-			if (lifes < 3)
-				lifes++;
+			if(statusChangeTemp <= 0)
+				if (lifes < 3)
+					lifes++;
+			statusChangeTemp = 0.5f;
 		}
 		
 		if (type.equals("Bonus"))
@@ -190,7 +196,7 @@ public class GameControler implements GameObject {
         }
 
         // Elegir al azar uno de los 4 ingredientes disponibles
-        String[] availableIngredients = {"Salame", "Pina", "Champinon", "Pimenton"};
+        String[] availableIngredients = {"Salame", "Piña", "Champiñón", "Pimentón"};
         Random random = new Random();
 
         // Agregar ingredientes al pedido (por ejemplo, 3 ingredientes)

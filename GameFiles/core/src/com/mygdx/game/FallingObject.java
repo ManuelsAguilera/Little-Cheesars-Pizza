@@ -71,9 +71,9 @@ public abstract class FallingObject implements GameObject {
     public Rectangle getBounds() {
         return sprite.getBoundingRectangle();
     }
-    //Eliminarse
+    //Eliminar
     public void remove() {
-        x=0;
+        //x = 0;
         this.isDetained = true;
     }
     
@@ -95,9 +95,14 @@ public abstract class FallingObject implements GameObject {
         int randomY = minY + (int) (Math.random() * ((maxY - minY)));
     	this.y = randomY;
     }
-    public void setX(float xValue)
+    public void setX(float x)
     {
-    	this.x = xValue;
+    	this.x = x;
+    }
+    
+    public void setY(float y)
+    {
+    	this.y = y;
     }
     //
     public void setSprite(Sprite change)
