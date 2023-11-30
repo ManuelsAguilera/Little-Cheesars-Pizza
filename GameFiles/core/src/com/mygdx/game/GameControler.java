@@ -63,10 +63,8 @@ public class GameControler implements GameObject {
         	
         	if (score % 6 == 0) {
         		cont++;
-        		System.out.println("+Orden");
         		generateOrder(cont);
         	} else {
-        		System.out.println("todo bien");
         		generateOrder(cont);
         	}
         	
@@ -74,9 +72,9 @@ public class GameControler implements GameObject {
             if (score % 3 == 0)
             {
             	addIngredient(1);
-            	System.out.println("+Ingrediente");
             	cantIng++;
             }
+            
             //Probabilidad de aparición de Power-Up
             Random random = new Random();
             if (0 == random.nextInt(8)) //probabilidad de 1/8
@@ -104,7 +102,6 @@ public class GameControler implements GameObject {
         {
         	String type = auxCol.getType();
         	activateColectible(type);
-        	auxCol.reset();
         	auxCol.remove();
         }
         //Check change status
@@ -131,7 +128,7 @@ public class GameControler implements GameObject {
 	private void activateColectible(String type) {
 		if (type.equals("Speed"))
 		{
-			cheesar.modificarVeloc(2); //Aumenta el doble
+			cheesar.modificarVeloc(2); // Duplica la velocidad
 			animation.modificarVeloc(2);
 			statusChangeTemp = 5.0f;
 			statusChange = "Speed";
@@ -139,10 +136,8 @@ public class GameControler implements GameObject {
 		
 		if (type.equals("HP"))
 		{
-			if(statusChangeTemp <= 0)
-				if (lifes < 3)
-					lifes++;
-			statusChangeTemp = 0.5f;
+			if (lifes < 3)
+				lifes++;
 		}
 		
 		if (type.equals("Bonus"))
@@ -172,22 +167,37 @@ public class GameControler implements GameObject {
 	    for (Ingredients ingredient : ingredientsList) {
 	        ingredient.render(batch);
 	    }
+	    // Renderizar power-ups
+	    ArrayList<Colectible> colToRemove = new ArrayList<Colectible>();
+	    for (Colectible colectible : powerUps) {
+	        colectible.render(batch);
+	        if (colectible.getRemove())
+	        	colToRemove.add(colectible);
+	    }
+	    powerUps.removeAll(colToRemove);
+	    
 	    /*if(statusChange == "Bonus")
-	    {
+	    {m
 	    	for (Ingredients ingredient : ingredientsList) {
 		        ingredient.render(batch);
 		    }
 	    }
 	    else
 	    {
-	    	for (Ingredients ingredient : ingredientsList) {
-	    		ingredient.render(batch);
-	    	}
+	    	// Renderizar los ingredientes
+		    for (Ingredients ingredient : ingredientsList) {
+		        ingredient.render(batch);
+		    }
+		    // Renderizar power-ups
+		    ArrayList<Colectible> colToRemove = new ArrayList<Colectible>();
+		    for (Colectible colectible : powerUps) {
+		        colectible.render(batch);
+		        if (colectible.getRemove()) {
+		        	colToRemove.add(colectible);
+		        }
+		    }
+		    powerUps.removeAll(colToRemove);
 	    }*/
-	    // Renderizar power-ups
-	    for (Colectible colectible : powerUps) {
-	        colectible.render(batch);
-	    }
 	}
 	
     @Override
@@ -219,14 +229,9 @@ public class GameControler implements GameObject {
             pizzaOrder.clear();
         }
 
-        String[] availableIngredients = {"Bonus"};
-        Random random = new Random();
-
-        // Agregar ingredientes al pedido
-        int numberOfIngredients = number; // Ajusta el número de ingredientes según tus preferencias
-        for (int i = 0; i < numberOfIngredients; i++) {
-            int randomIndex = random.nextInt(availableIngredients.length);
-            pizzaOrder.add(availableIngredients[randomIndex]);
+        // Agregar Bonus al pedido
+        for (int i = 0; i < number; i++) {
+            pizzaOrder.add("Bonus");
         }
     }
     

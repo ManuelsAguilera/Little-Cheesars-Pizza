@@ -11,18 +11,7 @@ public abstract class FallingObject implements GameObject {
     private float speedY;
     private float highestY; // Nueva variable para rastrear la posición más alta
     private boolean isDetained;
-    
-    /*
-    public FallingObject(Texture texture, float x) {
-        sprite = new Sprite(texture);
-        this.x = x;
-        this.highestY = 500; // Define la posición inicial en la parte superior
-        y = highestY; // Inicializa la posición más alta con la posición inicial
-        
-        speedY = 500; // Velocidad de caída inicial (ajusta según tus necesidades)
-        			
-        isDetained=false;
-    }*/
+    private boolean remove;
     
     public FallingObject(float x) {
         this.x = x;
@@ -30,22 +19,22 @@ public abstract class FallingObject implements GameObject {
         y = highestY; // Inicializa la posición más alta con la posición inicial
         
         speedY = 100; // Velocidad de caída inicial (ajusta según tus necesidades)
-        				
+        
+        isDetained = false;
+        remove = false;
     }
 
 
     @Override
     public void update(float delta) {
     	
-    	//if it does not exist dont do nothing
+    	// Si está detenido, no hace nada
     	if (this.isDetained)
     		return;
     	
     	//Si llega a y = 0 reiniciar posicion.
-    	
     	if (y<=64 )
     		this.reset();
-    	
     	
         y -= speedY * delta; // Hacer que el objeto caiga
 
@@ -71,10 +60,16 @@ public abstract class FallingObject implements GameObject {
     public Rectangle getBounds() {
         return sprite.getBoundingRectangle();
     }
-    //Eliminar
+    
+    public boolean getRemove() {
+    	return remove;
+    }
+    
+  //Eliminar
     public void remove() {
-        //x = 0;
-        this.isDetained = true;
+        //this.isDetained = true;
+    	System.out.println("hola");
+    	this.remove = true; 
     }
     
     //encapsular velocidad
