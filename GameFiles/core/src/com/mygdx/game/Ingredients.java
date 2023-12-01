@@ -26,7 +26,7 @@ public class Ingredients extends FallingObject {
         ingredientMap.put("Champiñón", new Sprite(new Texture("Champinon.png")));
         ingredientMap.put("Pimentón", new Sprite(new Texture("Pimenton.png")));
         
-        ingredientMap.put("BonusPoint", new Sprite(new Texture("drop.png")));
+        ingredientMap.put("BonusPoint", new Sprite(new Texture("money.png")));
         
         // Agrega los tipos de ingredientes a la lista
         ingredientTypes.addAll(ingredientMap.keySet());

@@ -122,6 +122,7 @@ public class GameScreen implements Screen {
 
 	@Override
 	public void dispose() {
+		backgroundMusic.stop();
 		gameControler.destruir();
 		
 	}
