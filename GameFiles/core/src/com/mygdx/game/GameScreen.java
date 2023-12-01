@@ -15,7 +15,6 @@ public class GameScreen implements Screen {
     private GameControler gameControler;
     final GameMenu game;
     private final Music backgroundMusic;
-	private BitmapFont font;
 	private Texture backgroundImage;
 	private Texture tresvidas;
 	private Texture dosvidas;
@@ -26,7 +25,7 @@ public class GameScreen implements Screen {
 	public GameScreen(final GameMenu game) {
 		this.game = game;
         this.batch = game.getBatch();
-        this.font = game.getFont();
+        game.getFont();
         batch = new SpriteBatch();
         
         camera = new OrthographicCamera();
