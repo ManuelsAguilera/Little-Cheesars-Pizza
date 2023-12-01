@@ -59,4 +59,15 @@ public class Colectible extends FallingObject {
     public String getType() {
         return this.type;
     }
+
+	@Override
+	public void destruir() {
+	    // Liberar memoria del HashMap
+	    colectibleMap.clear();
+	    colectibleMap = null;
+
+	    // Liberar memoria de la List
+	    colectibleTypes.clear();
+	    colectibleTypes = null;
+	}
 }

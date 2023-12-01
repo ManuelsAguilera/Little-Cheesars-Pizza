@@ -8,24 +8,21 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
-import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
 
 public class MainMenuScreen implements Screen {
-
 	final GameMenu game;
 	private SpriteBatch batch;
-	private BitmapFont font;
 	private OrthographicCamera camera;
 
 	public MainMenuScreen(final GameMenu game) {
 		this.game = game;
         this.batch = game.getBatch();
-        this.font = game.getFont();
+        game.getFont();
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, 800, 480);
-		
 	}
-	public void writeIntro() {
+	
+	public void writeInfo() {
 		FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("Montserrat-Bold.ttf"));
 		FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
 		parameter.size = 24; // Tamaño de la fuente
@@ -36,6 +33,7 @@ public class MainMenuScreen implements Screen {
 		font.draw(batch, "¡Bienvenido a Little Cheesar's Pizza!", 170, camera.viewportHeight/2+50);
 		font.draw(batch, "Toca para comenzar!", 260, camera.viewportHeight/2-50);
 	}
+	
 	@Override
 	public void render(float delta) {
 		ScreenUtils.clear(0, 0, 0.2f, 1);
@@ -44,7 +42,7 @@ public class MainMenuScreen implements Screen {
 		batch.setProjectionMatrix(camera.combined);
 		
 		batch.begin();
-		writeIntro();
+		writeInfo();
 		batch.end();
 
 		if (Gdx.input.isTouched()) {

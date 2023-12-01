@@ -3,11 +3,11 @@ package com.mygdx.game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
-import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
 
 public class GameScreen implements Screen {
 
@@ -21,12 +21,16 @@ public class GameScreen implements Screen {
 	private Texture dosvidas;
 	private Texture unavidas;
 	private Texture[] texturas;//Para cambiar texturas
+	private OrthographicCamera camera;
 	
 	public GameScreen(final GameMenu game) {
 		this.game = game;
         this.batch = game.getBatch();
         this.font = game.getFont();
         batch = new SpriteBatch();
+        
+        camera = new OrthographicCamera();
+		camera.setToOrtho(false, 800, 480);
         
         //Añadir musica
         backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal("novoimpegiato.mp3"));
@@ -54,6 +58,10 @@ public class GameScreen implements Screen {
 		
 	}
 	
+	public Music getBackgroundMusic() {
+        return backgroundMusic;
+    }
+	
 	public void writeInfo() {
 		FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("Montserrat-Bold.ttf"));
 		FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
@@ -70,12 +78,15 @@ public class GameScreen implements Screen {
 	
 	@Override
 	public void render(float delta) {
+		camera.update();
+		batch.setProjectionMatrix(camera.combined);
 		gameControler.update(delta);
 		if (gameControler.gameOver()) {
 	        // La partida ha terminado, cambia a la pantalla de GameOverScreen
 	        game.setScreen(new GameOverScreen(game)); // Reemplaza "GameOverScreen" con el nombre real de tu clase de pantalla de Game Over
 	        dispose();
-	    }     
+	        return;
+	    }
         //Aqui se inioian las capas del juego!!
         batch.begin();
         //Fondo
@@ -99,7 +110,7 @@ public class GameScreen implements Screen {
 	}
 
 	@Override
-	public void resume() {
+	public void resume(){
 		// TODO Auto-generated method stub
 		
 	}
@@ -107,15 +118,12 @@ public class GameScreen implements Screen {
 	@Override
 	public void hide() {
 		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
 	public void dispose() {
-	    batch.dispose();
-	    font.dispose();
-	    backgroundMusic.stop(); // Detén la música
-	    backgroundMusic.dispose(); // Libera los recursos de la música
+		gameControler.destruir();
+		
 	}
 
 }

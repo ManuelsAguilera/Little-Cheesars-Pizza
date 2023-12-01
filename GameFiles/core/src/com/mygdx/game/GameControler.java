@@ -25,6 +25,7 @@ public class GameControler implements GameObject {
     private GameControler(){
         cheesar = new Player(115);//Modifica la altura de la hitbox
         animation = new Cheesar(0, 0);//Modifica la altura de la animación
+        
         score = 0;
         lifes = 3;
         cont = 2;
@@ -38,8 +39,8 @@ public class GameControler implements GameObject {
         // Agregar dos ingredientes a la lista
         addIngredient(cantIng);
         generateOrder(2);
-        addColectible(1);
         new ShapeRenderer();
+        addColectible(1);
     }
     
     public static GameControler getInstance() {
@@ -307,8 +308,7 @@ public class GameControler implements GameObject {
     	return this.lifes;
     }
     
-    public String getOrderConcat()
-    {
+    public String getOrderConcat(){
     	if (pizzaOrder == null)
     		return "Esperando comensales";
     	//Regresa el contenido de la orderPizza concatenado.
@@ -321,9 +321,13 @@ public class GameControler implements GameObject {
     	return concatList;
     }
     //Revisar si es gameOver para el contexto
-    public boolean gameOver()
-    {
+    public boolean gameOver(){
     	return lifes <=0;
     }
+
+	@Override
+	public void destruir() {
+		instance=null;
+	}
 }
     

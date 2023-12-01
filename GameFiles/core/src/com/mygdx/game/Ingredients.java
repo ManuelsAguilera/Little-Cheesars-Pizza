@@ -59,9 +59,19 @@ public class Ingredients extends FallingObject {
     	return cpy;
     }
     
-    
     // Getter para identificar el tipo de ingrediente.
     public String getType() {
         return this.type;
     }
+
+	@Override
+	public void destruir() {
+	    // Liberar memoria del HashMap
+	    ingredientMap.clear();
+	    ingredientMap = null;
+
+	    // Liberar memoria de la List
+	    ingredientTypes.clear();
+	    ingredientTypes = null;
+	}
 }

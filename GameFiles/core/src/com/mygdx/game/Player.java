@@ -70,5 +70,16 @@ public class Player implements GameObject{
     	this.speed=defaultSpeed*cambio;    	
     	return true;
     }
+
+	@Override
+	public void destruir() {
+	    // Liberar memoria de la textura
+	    if (sprite != null && sprite.getTexture() != null) {
+	        sprite.getTexture().dispose();
+	    }
+
+	    // Establecer referencias a null
+	    sprite = null;
+	}
     
 }
