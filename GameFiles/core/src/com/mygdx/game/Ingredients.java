@@ -12,6 +12,7 @@ public class Ingredients extends FallingObject {
     private Map<String, Sprite> ingredientMap; // Mapa para asociar tipos de ingredientes a sprites
     private List<String> ingredientTypes; // Lista de tipos de ingredientes
     private String type;
+    private boolean bonus;
 
     public Ingredients(float initialX) {
         super(initialX);
@@ -24,22 +25,35 @@ public class Ingredients extends FallingObject {
         ingredientMap.put("Piña", new Sprite(new Texture("Pina.png")));
         ingredientMap.put("Champiñón", new Sprite(new Texture("Champinon.png")));
         ingredientMap.put("Pimentón", new Sprite(new Texture("Pimenton.png")));
-
+        
+        ingredientMap.put("BonusPoint", new Sprite(new Texture("drop.png")));
+        
         // Agrega los tipos de ingredientes a la lista
         ingredientTypes.addAll(ingredientMap.keySet());
 
         // Asignar un tipo al ingrediente al inicializar
         type = ""; // Puedes ajustar el tipo inicial según el ingrediente actual
-
+        
+        bonus = false;
+        
         reset();
     }
 
     // Implementa resetSprite para obtener un sprite aleatorio del mapa
     private void resetSprite() {
-        Random random = new Random();
-        String randomType = ingredientTypes.get(random.nextInt(ingredientTypes.size()));
-        type = randomType;
-        setSprite(ingredientMap.get(type));
+        if (bonus)
+        {
+        	type = ingredientTypes.get(4);
+        	setSprite(ingredientMap.get(type));
+        	this.bonus = false;
+        }
+        else
+        {
+        	Random random = new Random();
+            String randomType = ingredientTypes.get(random.nextInt(ingredientTypes.size()-1));
+            type = randomType;
+            setSprite(ingredientMap.get(type));
+        }
     }
 
     // Implementa reset para cambiar el sprite al azar y el tipo
@@ -53,12 +67,9 @@ public class Ingredients extends FallingObject {
         this.resetHeight();
     }
     
-    public ArrayList<String> getIngTypes(){
-    	ArrayList<String> cpy = new ArrayList<String>();
-    	cpy.addAll(ingredientMap.keySet());
-    	return cpy;
+    public void bonus() {
+    	this.bonus = true;
     }
-    
     // Getter para identificar el tipo de ingrediente.
     public String getType() {
         return this.type;

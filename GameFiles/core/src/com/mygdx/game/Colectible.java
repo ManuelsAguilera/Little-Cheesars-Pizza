@@ -50,12 +50,6 @@ public class Colectible extends FallingObject {
         this.resetHeight();
     }
 
-    public ArrayList<String> getColTypes() {
-        ArrayList<String> cpy = new ArrayList<String>();
-        cpy.addAll(colectibleMap.keySet());
-        return cpy;
-    }
-
     public String getType() {
         return this.type;
     }

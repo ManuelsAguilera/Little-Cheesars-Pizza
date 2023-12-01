@@ -33,7 +33,7 @@ public abstract class FallingObject implements GameObject {
     		return;
     	
     	//Si llega a y = 0 reiniciar posicion.
-    	if (y<=64 )
+    	if (y <= 2)
     		this.reset();
     	
         y -= speedY * delta; // Hacer que el objeto caiga
@@ -68,7 +68,6 @@ public abstract class FallingObject implements GameObject {
   //Eliminar
     public void remove() {
         //this.isDetained = true;
-    	System.out.println("hola");
     	this.remove = true; 
     }
     

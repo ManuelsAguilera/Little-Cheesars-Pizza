@@ -29,7 +29,7 @@ public class GameControler implements GameObject {
         score = 0;
         lifes = 3;
         cont = 2;
-        cantIng = 6;
+        cantIng = 7;
         speedDiff = 1;
         statusChange = "";
         pizzaOrder = new ArrayList<String>();
@@ -120,7 +120,6 @@ public class GameControler implements GameObject {
         
         if (statusChangeTemp <= 0 & statusChange == "Bonus" )
         {
-        	generateOrder(cont);
         	statusChange = "";
         }
 
@@ -143,15 +142,13 @@ public class GameControler implements GameObject {
 		
 		if (type.equals("Bonus"))
 		{
-			generateBonus(cont);
-			statusChangeTemp = 10.0f;
+			statusChangeTemp = 5.0f;
 			statusChange = "Bonus";
 		}
 		
 	}
 
 	private void addColectible(int cant) {
-		System.out.println("+1 Power-Up");
 		for (int i = 0; i < cant; i++)
     	{
 			powerUps.add(new Colectible(0));
@@ -160,14 +157,27 @@ public class GameControler implements GameObject {
 
 	@Override
 	 public void render(SpriteBatch batch) {
-	    //Renderizar al jugador
+	    // Renderizar al jugador
 	    cheesar.render(batch);
-	    //Renderizar animación
+	    
+	    // Renderizar animación
 	    animation.render(batch);
+	    
 	    // Renderizar los ingredientes
-	    for (Ingredients ingredient : ingredientsList) {
-	        ingredient.render(batch);
+	    if(statusChange == "Bonus")
+	    {
+	    	for (Ingredients ingredient : ingredientsList) {
+	    		ingredient.bonus();
+	    		ingredient.render(batch);
+		    }
 	    }
+	    else
+	    {
+	    	for (Ingredients ingredient : ingredientsList) {
+		        ingredient.render(batch);
+		    }
+	    }
+	    
 	    // Renderizar power-ups
 	    ArrayList<Colectible> colToRemove = new ArrayList<Colectible>();
 	    for (Colectible colectible : powerUps) {
@@ -176,29 +186,6 @@ public class GameControler implements GameObject {
 	        	colToRemove.add(colectible);
 	    }
 	    powerUps.removeAll(colToRemove);
-	    
-	    /*if(statusChange == "Bonus")
-	    {m
-	    	for (Ingredients ingredient : ingredientsList) {
-		        ingredient.render(batch);
-		    }
-	    }
-	    else
-	    {
-	    	// Renderizar los ingredientes
-		    for (Ingredients ingredient : ingredientsList) {
-		        ingredient.render(batch);
-		    }
-		    // Renderizar power-ups
-		    ArrayList<Colectible> colToRemove = new ArrayList<Colectible>();
-		    for (Colectible colectible : powerUps) {
-		        colectible.render(batch);
-		        if (colectible.getRemove()) {
-		        	colToRemove.add(colectible);
-		        }
-		    }
-		    powerUps.removeAll(colToRemove);
-	    }*/
 	}
 	
     @Override
@@ -224,23 +211,16 @@ public class GameControler implements GameObject {
         }
     }
     
-    private void generateBonus(int number) {
-        // Vaciar la lista de pedidos de pizza si posee datos
-        if (pizzaOrder != null) {
-            pizzaOrder.clear();
-        }
-
-        // Agregar Bonus al pedido
-        for (int i = 0; i < number; i++) {
-            pizzaOrder.add("Bonus");
-        }
-    }
-    
     private void checkCorrectOrder(String type) {
 		//Revisa si es parte de una pizza ordenada
     	//si no es, pierdes vida
     	if (pizzaOrder == null)
     		return;
+    	
+    	if(type == "BonusPoint") {
+    		score++;
+    		return;
+    	}
     	
     	for (int i=0; i < pizzaOrder.size(); i++) {
     		String order = pizzaOrder.get(i);
@@ -303,12 +283,11 @@ public class GameControler implements GameObject {
     	return this.score;
     }
     
-    public int getLifes()
-    {
+    public int getLifes() {
     	return this.lifes;
     }
     
-    public String getOrderConcat(){
+    public String getOrderConcat() {
     	if (pizzaOrder == null)
     		return "Esperando comensales";
     	//Regresa el contenido de la orderPizza concatenado.
@@ -321,7 +300,7 @@ public class GameControler implements GameObject {
     	return concatList;
     }
     //Revisar si es gameOver para el contexto
-    public boolean gameOver(){
+    public boolean gameOver() {
     	return lifes <=0;
     }
 
