@@ -19,8 +19,9 @@ public class GameControler implements GameObject {
     private Cheesar animation;
     private ArrayList<String> pizzaOrder; //Pedido de ingredientes a recolectar
     private ArrayList<Ingredients> ingredientsList; // Lista de ingredientes
-    private ArrayList<Colectible> powerUps; // Lista de PowerUps
+    private ArrayList<Collectible> powerUps; // Lista de PowerUps
     private static GameControler instance;    
+    private PowerUpStrategy strategy;
     
     private GameControler(){
         cheesar = new Player(115);//Modifica la altura de la hitbox
@@ -34,7 +35,8 @@ public class GameControler implements GameObject {
         statusChange = "";
         pizzaOrder = new ArrayList<String>();
         ingredientsList = new ArrayList<Ingredients>();
-        powerUps = new ArrayList<Colectible>();
+        powerUps = new ArrayList<Collectible>();
+        strategy = null;
         
         // Agregar dos ingredientes a la lista
         addIngredient(cantIng);
@@ -78,7 +80,7 @@ public class GameControler implements GameObject {
             
             //Probabilidad de aparición de Power-Up
             Random random = new Random();
-            if (0 == random.nextInt(8)) //probabilidad de 1/8
+            if (0 == random.nextInt(7)) //probabilidad de 1/7
             	addColectible(1);
         }
         
@@ -86,7 +88,7 @@ public class GameControler implements GameObject {
             ingredient.update(delta);
         }
         
-        for (Colectible colectible : powerUps) {
+        for (Collectible colectible : powerUps) {
             colectible.update(delta);
         }
         
@@ -98,7 +100,7 @@ public class GameControler implements GameObject {
         	auxIng.reset();
         }
         
-        Colectible auxCol = detectCollisionsCol();
+        Collectible auxCol = detectCollisionsCol();
         if (auxCol != null)
         {
         	String type = auxCol.getType();
@@ -128,16 +130,14 @@ public class GameControler implements GameObject {
 	private void activateColectible(String type) {
 		if (type.equals("Speed"))
 		{
-			cheesar.modificarVeloc(2); // Duplica la velocidad
-			animation.modificarVeloc(2);
-			statusChangeTemp = 5.0f;
-			statusChange = "Speed";
+			strategy = new Speed();
+			strategy.applyPowerUp(cheesar, animation, instance);
 		}
 		
 		if (type.equals("HP"))
 		{
-			if (lifes < 3)
-				lifes++;
+			strategy = new HP();
+			strategy.applyPowerUp(cheesar, animation, instance);
 		}
 		
 		if (type.equals("Bonus"))
@@ -151,7 +151,7 @@ public class GameControler implements GameObject {
 	private void addColectible(int cant) {
 		for (int i = 0; i < cant; i++)
     	{
-			powerUps.add(new Colectible(0));
+			powerUps.add(new Collectible(0));
     	}
 	}
 
@@ -179,8 +179,8 @@ public class GameControler implements GameObject {
 	    }
 	    
 	    // Renderizar power-ups
-	    ArrayList<Colectible> colToRemove = new ArrayList<Colectible>();
-	    for (Colectible colectible : powerUps) {
+	    ArrayList<Collectible> colToRemove = new ArrayList<Collectible>();
+	    for (Collectible colectible : powerUps) {
 	        colectible.render(batch);
 	        if (colectible.getRemove())
 	        	colToRemove.add(colectible);
@@ -249,10 +249,10 @@ public class GameControler implements GameObject {
         return null;
     }
     
-    private Colectible detectCollisionsCol() {
+    private Collectible detectCollisionsCol() {
         Rectangle playerBounds = cheesar.getBounds();
 
-        for (Colectible colectible : powerUps) {
+        for (Collectible colectible : powerUps) {
             Rectangle colectibleBounds = colectible.getBounds();
 
             if (playerBounds.overlaps(colectibleBounds)) {
@@ -285,6 +285,18 @@ public class GameControler implements GameObject {
     
     public int getLifes() {
     	return this.lifes;
+    }
+    
+    public void setLifes(int lifes) {
+    	this.lifes = lifes;
+    }
+    
+    public void setStatusChangeTemp(float duration) {
+    	this.statusChangeTemp = duration;
+    }
+    
+    public void setStatusChange(String change) {
+    	this.statusChange = change;
     }
     
     public String getOrderConcat() {

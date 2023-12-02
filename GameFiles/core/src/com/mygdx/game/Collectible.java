@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-public class Colectible extends FallingObject {
+public class Collectible extends FallingObject {
     private Map<String, Sprite> colectibleMap;
     private List<String> colectibleTypes;
     private String type;
@@ -24,7 +24,7 @@ public class Colectible extends FallingObject {
     private boolean remove;
     
     // Constructor
-    public Colectible(float initialX) {
+    public Collectible(float initialX) {
         super();
         
         //PARTE REMOVIDA DE FALLING OBJECTthis.x = x;
