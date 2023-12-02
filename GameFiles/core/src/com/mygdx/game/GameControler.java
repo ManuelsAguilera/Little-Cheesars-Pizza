@@ -8,24 +8,25 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 
 public class GameControler implements GameObject {
-    private long score; //Puntaje
-    private int lifes; //Vidas de Cheesar
-    private int cont; //Contador auxiliar
-    private int cantIng; //Cantidad de ingredientes
-    private float speedDiff; //Velocidad de Cheesar
-    private String statusChange; //Cambio de estado
-    private float statusChangeTemp; //Temporizador de cambio de estado
+    private long score; // Puntaje
+    private int lifes; // Vidas de Cheesar
+    private int cont; // Contador auxiliar
+    private int cantIng; // Cantidad de ingredientes
+    private float speedDiff; // Velocidad de Cheesar
+    private String statusChange; // Cambio de estado
+    private float statusChangeTemp; // Temporizador de cambio de estado
     private Player cheesar;
     private Cheesar animation;
-    private ArrayList<String> pizzaOrder; //Pedido de ingredientes a recolectar
+    private ArrayList<String> pizzaOrder; // Pedido de ingredientes a recolectar
     private ArrayList<Ingredients> ingredientsList; // Lista de ingredientes
     private ArrayList<Collectible> powerUps; // Lista de PowerUps
     private static GameControler instance;    
     private PowerUpStrategy strategy;
+    //private LevelConfig currentLevelConfig;
     
     private GameControler(){
-        cheesar = new Player(115);//Modifica la altura de la hitbox
-        animation = new Cheesar(0, 0);//Modifica la altura de la animación
+        cheesar = new Player(115);// Modifica la altura de la hitbox
+        animation = new Cheesar(0, 0);// Modifica la altura de la animación
         
         score = 0;
         lifes = 3;
