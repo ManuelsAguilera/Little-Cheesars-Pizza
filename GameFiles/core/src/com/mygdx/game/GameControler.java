@@ -301,12 +301,12 @@ public class GameControler implements GameObject {
     }
     //Revisar si es gameOver para el contexto
     public boolean gameOver() {
-    	return lifes <=0;
+    	return lifes <= 0;
     }
 
 	@Override
 	public void destruir() {
-		instance=null;
+		instance = null;
 	}
 }
     

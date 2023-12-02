@@ -22,6 +22,7 @@ public class Player implements GameObject{
     	sprite = new Sprite(texture);
     }
 	
+    @Override
     public void update(float delta) {
         // Manejo de entrada para mover al jugador
         if (Gdx.input.isKeyPressed(Keys.A)) {
@@ -46,6 +47,7 @@ public class Player implements GameObject{
         sprite.setPosition(x, y);
     }
     
+    @Override
     public void render(SpriteBatch batch){
     	if (flipped) {
             sprite.setScale(-1, 1);
@@ -55,6 +57,7 @@ public class Player implements GameObject{
     	sprite.draw(batch);
     }
     
+    @Override
     public Rectangle getBounds()
     {
     	return sprite.getBoundingRectangle();

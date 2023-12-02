@@ -1,26 +1,21 @@
 package com.mygdx.game;
 
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Rectangle;
-
 public abstract class FallingObject implements GameObject {
-	public final void fallingObjectAlgorithm() {
-		update();
+	/*public final void fallingObjectAlgorithm() {
+		update(0);
 		reset();
-        remove();
+		destruir();
         resetHeight();
-    }
+   	}*/
 	
-	//PASO 1: Actualizar
-    public abstract void update();
+    public abstract void update(float delta);
     
-    //PASO 2: Resetear
+    public abstract void resetSprite();
+    
     public abstract void reset();
-
-    //Paso 3: Eliminar IMPORTANTE
-    public abstract void remove();
-
-    //PASO 4: ReSpawn IMPORTANTE
+    
+    public abstract void destruir();
+    
     public abstract void resetHeight();
+    
 }

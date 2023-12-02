@@ -1,4 +1,4 @@
-package com.mygdx.game;
+	package com.mygdx.game;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -20,11 +20,11 @@ public class Ingredients extends FallingObject {
     private Sprite sprite;
     private float x, y;
     private float speedY;
-    private float highestY; // Nueva variable para rastrear la posición más alta
+    private float highestY;
     private boolean isDetained;
     private boolean remove;
     
-
+    // Constructor
     public Ingredients(float initialX) {
         super();
         
@@ -57,7 +57,7 @@ public class Ingredients extends FallingObject {
     }
 
     // Implementa resetSprite para obtener un sprite aleatorio del mapa
-    private void resetSprite() {
+    public void resetSprite() {
         if (bonus)
         {
         	type = ingredientTypes.get(4);
@@ -107,14 +107,18 @@ public class Ingredients extends FallingObject {
 	public boolean getRemove(){
     	return remove;
     }
+	
 	public void remove(){
         //this.isDetained = true;
     	this.remove = true;
     }
+	
+	@Override
 	public void render(SpriteBatch batch){
     	if (!this.isDetained)
     		sprite.draw(batch);
     }
+	
 	public boolean modificarVeloc(float cambio){
     	if (!(0<cambio && cambio<1))
     		return false;
@@ -122,27 +126,32 @@ public class Ingredients extends FallingObject {
     	this.speedY*=cambio;    	
     	return true;
     }
+	
 	public void resetHeight(){
         int minY = 480;
         int maxY = 800;
         int randomY = minY + (int) (Math.random() * ((maxY - minY)));
-    	this.y = randomY;
+    	this.setY(randomY);
     }
+	
 	public void setX(float x){
     	this.x = x;
     }
+	
     public void setY(float y){
     	this.y = y;
     }
+    
     public void setSprite(Sprite change){
     	sprite = change;
     }
-
+    
     @Override
     public Rectangle getBounds() {
 	     return sprite.getBoundingRectangle();
-	 }
-
+	}
+    
+    @Override
     public void update(float delta){
     	
     	// Si está detenido, no hace nada
@@ -163,10 +172,5 @@ public class Ingredients extends FallingObject {
         }
 
         sprite.setPosition(x, y);
-}
-	@Override
-	public void update() {
-		// TODO Auto-generated method stub
-		
-	}
+    }
 }

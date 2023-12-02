@@ -8,21 +8,21 @@ import com.badlogic.gdx.math.Rectangle;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 public class Colectible extends FallingObject {
-    private HashMap<String, Sprite> colectibleMap;
+    private Map<String, Sprite> colectibleMap;
     private List<String> colectibleTypes;
     private String type;
     //PARTE REMOVIDA DE FALLING OBJECT PARA IMPLEMENTAR TEMPLATE METHOD
     private Sprite sprite;
     private float x, y;
     private float speedY;
-    private float highestY; // Nueva variable para rastrear la posición más alta
+    private float highestY;
     private boolean isDetained;
     private boolean remove;
     
-
     // Constructor
     public Colectible(float initialX) {
         super();
@@ -53,7 +53,7 @@ public class Colectible extends FallingObject {
     }
 
     // Implementa resetSprite para obtener un sprite aleatorio del mapa
-    private void resetSprite() {
+    public void resetSprite() {
         Random random = new Random();
         String randomType = colectibleTypes.get(random.nextInt(colectibleTypes.size()));
         type = randomType;
@@ -87,14 +87,17 @@ public class Colectible extends FallingObject {
 	public boolean getRemove(){
     	return remove;
     }
+	
 	public void remove(){
-        //this.isDetained = true;
     	this.remove = true;
     }
+	
+	@Override
 	public void render(SpriteBatch batch){
     	if (!this.isDetained)
     		sprite.draw(batch);
     }
+	
 	public boolean modificarVeloc(float cambio){
     	if (!(0<cambio && cambio<1))
     		return false;
@@ -102,27 +105,32 @@ public class Colectible extends FallingObject {
     	this.speedY*=cambio;    	
     	return true;
     }
+	
 	public void resetHeight(){
         int minY = 480;
         int maxY = 800;
         int randomY = minY + (int) (Math.random() * ((maxY - minY)));
-    	this.y = randomY;
+    	this.setY(randomY);
     }
-	public void setX(float x){
+	
+	private void setX(float x){
     	this.x = x;
     }
-    public void setY(float y){
+	
+	private void setY(float y){
     	this.y = y;
     }
-    public void setSprite(Sprite change){
+    
+	private void setSprite(Sprite change){
     	sprite = change;
     }
-
-    @Override
+	
+	@Override
     public Rectangle getBounds() {
 	     return sprite.getBoundingRectangle();
-	 }
-
+	}
+    
+    @Override
     public void update(float delta){
     	
     	// Si está detenido, no hace nada
@@ -131,7 +139,7 @@ public class Colectible extends FallingObject {
     	
     	//Si llega a y = 0 reiniciar posicion.
     	if (y <= 2)
-    		this.reset();
+    		this.remove();
     	
         y -= speedY * delta; // Hacer que el objeto caiga
 
@@ -144,9 +152,4 @@ public class Colectible extends FallingObject {
 
         sprite.setPosition(x, y);
     }
-	@Override
-	public void update() {
-		// TODO Auto-generated method stub
-		
-	}
 }
